@@ -1,0 +1,18 @@
+{
+  "name": "mfe-shell",
+  "private": true,
+  "workspaces": [
+    "shell",
+    "mfe-react",
+    "mfe-vue",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"yarn workspace shell dev\" \"yarn workspace mfe-react dev\" \"yarn workspace mfe-vue dev\"",
+    "build": "yarn workspaces run build",
+    "lint": "yarn workspaces run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
