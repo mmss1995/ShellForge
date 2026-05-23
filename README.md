@@ -157,4 +157,4 @@ eventBus.on('user:login', ({ userId }) => {
 
 ## 📄 Licenza
 
-MIT © [Matteo Sausto](https://github.com/matteosausto)
+MIT © [Matteo Sausto](https://github.com/mmss1995/)
