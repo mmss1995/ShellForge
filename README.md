@@ -1,6 +1,6 @@
 # 🧱 MFE Shell — Microfrontend Boilerplate
 
-> Architettura microfrontend production-ready con Module Federation, shell app e micro-app indipendenti in React e Vue.
+> Production-ready microfrontend architecture with Module Federation, a shell app, and independent micro-apps in React and Vue.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Webpack](https://img.shields.io/badge/Webpack-5-8DD6F9?logo=webpack)
@@ -11,22 +11,22 @@
 
 ---
 
-## 🎯 Obiettivo del Progetto
+## 🎯 Purpose
 
-I monoliti frontend diventano insostenibili man mano che i team crescono: deploy accoppiati, conflitti di dipendenze, impossibilità di aggiornare un framework senza toccare tutto il resto.
+Frontend monoliths become unsustainable as teams grow: coupled deployments, dependency conflicts, and the inability to upgrade a framework without touching everything else.
 
-**MFE Shell** è un boilerplate funzionante che dimostra come costruire un'applicazione frontend scalabile come insieme di micro-app indipendenti, ciascuna con il proprio ciclo di deploy, il proprio framework e il proprio team di riferimento — esattamente come avviene nei progetti enterprise di grandi dimensioni.
+**MFE Shell** is a working boilerplate that demonstrates how to build a scalable frontend as a set of independent micro-apps — each with its own deploy cycle, its own framework and its own team ownership — exactly as it happens in large-scale enterprise projects.
 
 ---
 
-## 🏗️ Architettura
+## 🏗️ Architecture
 
 ```
 mfe-shell/
-├── shell/                     # App contenitore (host)
+├── shell/                     # Container app (host)
 │   ├── src/
-│   │   ├── router/            # Routing tra micro-app
-│   │   ├── layout/            # Header, sidebar, layout globale
+│   │   ├── router/            # Routing between micro-apps
+│   │   ├── layout/            # Header, sidebar, global layout
 │   │   └── bootstrap.ts
 │   └── webpack.config.js      # Module Federation host config
 │
@@ -42,49 +42,49 @@ mfe-shell/
 │   │   └── components/
 │   └── webpack.config.js      # Module Federation remote config
 │
-├── shared/                    # Contratti condivisi tra app
+├── shared/                    # Shared contracts between apps
 │   ├── types/                 # TypeScript interfaces
-│   ├── events/                # Event bus per comunicazione cross-app
-│   └── auth/                  # Stato autenticazione condiviso
+│   ├── events/                # Event bus for cross-app communication
+│   └── auth/                  # Shared authentication state
 │
-└── docker-compose.yml         # Avvio locale dell'intera architettura
+└── docker-compose.yml         # Spin up the full architecture locally
 ```
 
 ---
 
-## ✨ Funzionalità Principali
+## ✨ Key Features
 
-- **Module Federation (Webpack 5)** — le micro-app si caricano a runtime senza essere bundlate insieme
-- **Framework agnostic** — React e Vue convivono nella stessa shell senza conflitti
-- **Shared dependencies** — React, Vue e le librerie comuni sono condivise tra host e remoti per evitare duplicazioni
-- **Event bus tipizzato** — comunicazione tra micro-app tramite custom events con TypeScript
-- **Auth condivisa** — lo stato di autenticazione è gestito dalla shell e reso disponibile a tutte le micro-app
-- **Docker Compose** — un singolo comando per avviare l'intera architettura in locale
-- **Deploy indipendenti** — ogni micro-app può essere deployata senza toccare le altre
+- **Module Federation (Webpack 5)** — micro-apps load at runtime without being bundled together
+- **Framework agnostic** — React and Vue coexist in the same shell without conflicts
+- **Shared dependencies** — React, Vue and common libraries are shared between host and remotes to avoid duplication
+- **Typed event bus** — cross-app communication via custom events with TypeScript
+- **Shared auth** — authentication state is managed by the shell and made available to all micro-apps
+- **Docker Compose** — a single command to spin up the entire architecture locally
+- **Independent deployments** — each micro-app can be deployed without touching the others
 
 ---
 
 ## 🚀 Quick Start
 
 ```bash
-# Clona il repository
-git clone https://github.com/matteosausto/mfe-shell.git
+# Clone the repository
+git clone https://github.com/mmss1995/mfe-shell.git
 cd mfe-shell
 
-# Avvio con Docker (consigliato)
+# Start with Docker (recommended)
 docker-compose up
 
-# oppure avvio manuale
+# or start manually
 cd mfe-react && npm install && npm start &
 cd mfe-vue   && npm install && npm start &
 cd shell      && npm install && npm start
 ```
 
-L'applicazione sarà disponibile su `http://localhost:3000`.
+The application will be available at `http://localhost:3000`.
 
 ---
 
-## ⚙️ Module Federation — Configurazione
+## ⚙️ Module Federation Config
 
 ### Shell (Host)
 
@@ -97,14 +97,14 @@ new ModuleFederationPlugin({
     mfe_vue:   'mfe_vue@http://localhost:3002/remoteEntry.js',
   },
   shared: {
-    react:     { singleton: true, requiredVersion: '^18.0.0' },
+    react:       { singleton: true, requiredVersion: '^18.0.0' },
     'react-dom': { singleton: true },
-    vue:       { singleton: true, requiredVersion: '^3.0.0' },
+    vue:         { singleton: true, requiredVersion: '^3.0.0' },
   },
 })
 ```
 
-### Micro-app React (Remote)
+### React Micro-app (Remote)
 
 ```js
 // mfe-react/webpack.config.js
@@ -120,9 +120,9 @@ new ModuleFederationPlugin({
 
 ---
 
-## 📡 Comunicazione tra Micro-app
+## 📡 Cross-app Communication
 
-La comunicazione avviene tramite un event bus leggero — nessun accoppiamento diretto tra le app.
+Communication happens through a lightweight event bus — no direct coupling between apps.
 
 ```ts
 // shared/events/eventBus.ts
@@ -131,30 +131,36 @@ type AppEvents = {
   'cart:update': { itemCount: number };
 };
 
-// Emettere un evento dalla micro-app React
+// Emit from the React micro-app
 eventBus.emit('user:login', { userId: '42', role: 'admin' });
 
-// Ascoltare nella micro-app Vue
+// Listen from the Vue micro-app
 eventBus.on('user:login', ({ userId }) => {
-  console.log(`Utente loggato: ${userId}`);
+  console.log(`User logged in: ${userId}`);
 });
 ```
 
 ---
 
-## 🧰 Stack Tecnologico
+## 🧰 Tech Stack
 
-| Strumento | Ruolo |
+| Tool | Role |
 |---|---|
-| **Webpack 5 + Module Federation** | Caricamento runtime delle micro-app |
-| **React 18** | Framework micro-app 1 |
-| **Vue 3** | Framework micro-app 2 |
-| **TypeScript** | Contratti condivisi e type safety |
-| **Docker + docker-compose** | Orchestrazione locale |
-| **React Router / Vue Router** | Routing interno alle micro-app |
+| **Webpack 5 + Module Federation** | Runtime loading of micro-apps |
+| **React 18** | Micro-app 1 framework |
+| **Vue 3** | Micro-app 2 framework |
+| **TypeScript** | Shared contracts and type safety |
+| **Docker + docker-compose** | Local orchestration |
+| **React Router / Vue Router** | Internal routing per micro-app |
 
 ---
 
-## 📄 Licenza
+## 👤 Author
 
-MIT © [Matteo Sausto](https://github.com/mmss1995/)
+**Matteo Sausto** — [github.com/mmss1995](https://github.com/mmss1995)
+
+---
+
+## 📄 License
+
+MIT © [Matteo Sausto](https://github.com/mmss1995)
