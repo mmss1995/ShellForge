@@ -1,9 +1,23 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { eventBus } from '@mfe/shared'
 
 type Props = { children: React.ReactNode }
 
 export function Layout({ children }: Props) {
+  const [loggedUser, setLoggedUser] = useState<string | null>(null)
+
+  useEffect(() => {
+    console.log("Event bus?", eventBus!= null);
+    
+    const unsubscribe = eventBus.on('user:login', ({ userId, role }) => {
+      console.log('Inside the event bus event');
+      
+      setLoggedUser(`${userId} (${role})`)
+    })
+    return () => unsubscribe()
+  }, [])
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <header style={{
@@ -36,6 +50,11 @@ export function Layout({ children }: Props) {
             Vue App
           </NavLink>
         </nav>
+        {loggedUser && (
+          <span style={{ marginLeft: 'auto', color: '#86efac', fontSize: '0.9rem' }}>
+            ✓ Logged in as: {loggedUser}
+          </span>
+        )}
       </header>
       <main style={{ flex: 1, padding: '2rem' }}>
         {children}
