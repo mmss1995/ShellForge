@@ -8,11 +8,12 @@
     "shared"
   ],
   "scripts": {
-    "dev": "concurrently \"yarn workspace shell dev\" \"yarn workspace mfe-react dev\" \"yarn workspace mfe-vue dev\"",
+    "dev": "concurrently \"yarn workspace mfe-react preview\" \"yarn workspace mfe-vue preview\" \"yarn workspace shell dev\"",
+    "build:remotes": "concurrently \"yarn workspace mfe-react build\" \"yarn workspace mfe-vue build\"",
     "build": "yarn workspaces run build",
     "lint": "yarn workspaces run lint"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^8.2.0"
   }
 }
