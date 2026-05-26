@@ -23,31 +23,33 @@ Frontend monoliths become unsustainable as teams grow: coupled deployments, depe
 
 ```
 mfe-shell/
-├── shell/                     # Container app (host)
+├── shell/                     # Container app — Vite + React (port 3000)
 │   ├── src/
-│   │   ├── router/            # Routing between micro-apps
-│   │   ├── layout/            # Header, sidebar, global layout
-│   │   └── bootstrap.ts
-│   └── webpack.config.js      # Module Federation host config
+│   │   ├── components/
+│   │   │   ├── Layout/        # Navbar with auth state
+│   │   │   └── VueMounter/    # React wrapper for Vue micro-app
+│   │   ├── router/            # AppRouter — lazy loads micro-apps
+│   │   └── main.tsx
+│   └── vite.config.ts         # Module Federation host config
 │
-├── mfe-react/                 # Micro-app 1 — React 18
+├── mfe-react/                 # Micro-app 1 — Vite + React (port 3001)
 │   ├── src/
-│   │   ├── App.tsx
-│   │   └── components/
-│   └── webpack.config.js      # Module Federation remote config
+│   │   ├── pages/Home.tsx
+│   │   └── App.tsx
+│   └── vite.config.ts         # Module Federation remote config
 │
-├── mfe-vue/                   # Micro-app 2 — Vue 3
+├── mfe-vue/                   # Micro-app 2 — Vite + Vue 3 (port 3002)
 │   ├── src/
-│   │   ├── App.vue
-│   │   └── components/
-│   └── webpack.config.js      # Module Federation remote config
+│   │   ├── pages/Home.vue
+│   │   └── App.vue
+│   └── vite.config.ts         # Module Federation remote config
 │
-├── shared/                    # Shared contracts between apps
-│   ├── types/                 # TypeScript interfaces
-│   ├── events/                # Event bus for cross-app communication
-│   └── auth/                  # Shared authentication state
+├── shared/                    # Shared package
+│   └── src/
+│       ├── events/eventBus.ts # Typed event bus
+│       └── auth/authStore.ts  # Shared auth state
 │
-└── docker-compose.yml         # Spin up the full architecture locally
+└── package.json               # Yarn workspaces root
 ```
 
 ---
@@ -71,13 +73,14 @@ mfe-shell/
 git clone https://github.com/mmss1995/mfe-shell.git
 cd mfe-shell
 
-# Start with Docker (recommended)
-docker-compose up
+# Install dependencies
+yarn install
 
-# or start manually
-cd mfe-react && npm install && npm start &
-cd mfe-vue   && npm install && npm start &
-cd shell      && npm install && npm start
+# Build remotes (required before dev)
+yarn build:remotes
+
+# Start all apps
+yarn dev
 ```
 
 The application will be available at `http://localhost:3000`.

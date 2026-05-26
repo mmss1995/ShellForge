@@ -1,21 +1,30 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { eventBus } from '@mfe/shared'
+import { eventBus, authStore } from '@mfe/shared'
 
 type Props = { children: React.ReactNode }
 
 export function Layout({ children }: Props) {
-  const [loggedUser, setLoggedUser] = useState<string | null>(null)
+  const [authState, setAuthState] = useState(authStore.getState())
 
   useEffect(() => {
-    console.log("Event bus?", eventBus!= null);
-    
-    const unsubscribe = eventBus.on('user:login', ({ userId, role }) => {
-      console.log('Inside the event bus event');
-      
-      setLoggedUser(`${userId} (${role})`)
+    const unsubscribeAuth = authStore.subscribe((state) => {
+      setAuthState(state)
     })
-    return () => unsubscribe()
+
+    const unsubscribeLogin = eventBus.on('user:login', ({ userId, role }) => {
+      authStore.login(userId, role)
+    })
+
+    const unsubscribeLogout = eventBus.on('user:logout', () => {
+      authStore.logout()
+    })
+
+    return () => {
+      unsubscribeAuth()
+      unsubscribeLogin()
+      unsubscribeLogout()
+    }
   }, [])
 
   return (
@@ -50,11 +59,31 @@ export function Layout({ children }: Props) {
             Vue App
           </NavLink>
         </nav>
-        {loggedUser && (
-          <span style={{ marginLeft: 'auto', color: '#86efac', fontSize: '0.9rem' }}>
-            ✓ Logged in as: {loggedUser}
-          </span>
-        )}
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          {authState.isAuthenticated ? (
+            <>
+              <span style={{ color: '#86efac', fontSize: '0.9rem' }}>
+                ✓ {authState.userId} ({authState.role})
+              </span>
+              <button
+                onClick={() => eventBus.emit('user:logout', undefined)}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid #cbd5e1',
+                  color: '#cbd5e1',
+                  padding: '0.25rem 0.75rem',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '0.85rem'
+                }}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Not logged in</span>
+          )}
+        </div>
       </header>
       <main style={{ flex: 1, padding: '2rem' }}>
         {children}
