@@ -11,6 +11,7 @@
     "dev": "concurrently \"yarn workspace mfe-react preview\" \"yarn workspace mfe-vue preview\" \"yarn workspace shell dev\"",
     "build:remotes": "concurrently \"yarn workspace mfe-react build\" \"yarn workspace mfe-vue build\"",
     "build": "yarn build:remotes && yarn workspace shell build",
+    "test": "yarn workspace @mfe/shared test",
     "lint": "yarn workspace shell lint && yarn workspace mfe-react lint"
   },
   "devDependencies": {

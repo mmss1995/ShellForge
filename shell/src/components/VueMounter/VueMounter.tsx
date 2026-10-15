@@ -20,7 +20,8 @@ export function VueMounter({ factory }: Props) {
         app = createApp(module.default as object)
         app.mount(containerRef.current)
       })
-      .catch(() => {
+      .catch((e) => {
+        console.error('Vue app failed to load', e)
         if (!cancelled) setFailed(true)
       })
 

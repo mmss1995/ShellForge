@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { RemoteBoundary } from '../components/RemoteBoundary/RemoteBoundary'
 import { VueMounter } from '../components/VueMounter/VueMounter'
 
 const ReactApp = lazy(() => import('mfe_react/App'))
@@ -13,7 +14,9 @@ export function AppRouter() {
     <Suspense fallback={<Fallback />}>
       <Routes>
         <Route path="/"        element={<Navigate to="/react" replace />} />
-        <Route path="/react/*" element={<ReactApp />} />
+        <Route path="/react/*" element={
+          <RemoteBoundary name="React app"><ReactApp /></RemoteBoundary>
+        } />
         <Route path="/vue/*"   element={
           <VueMounter factory={() => import('mfe_vue/App')} />
         } />
