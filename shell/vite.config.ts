@@ -8,10 +8,10 @@ export default defineConfig({
     federation({
       name: 'shell',
       remotes: {
-        mfe_react: 'http://localhost:3001/assets/remoteEntry.js',
-        mfe_vue: 'http://localhost:3002/assets/remoteEntry.js',
+        mfe_react: process.env.REMOTE_REACT_URL ?? 'http://localhost:3001/assets/remoteEntry.js',
+        mfe_vue: process.env.REMOTE_VUE_URL ?? 'http://localhost:3002/assets/remoteEntry.js',
       },
-      shared: ['@mfe/shared'],
+      shared: ['react', 'react-dom', 'vue', '@mfe/shared'],
     }),
   ],
   server: {

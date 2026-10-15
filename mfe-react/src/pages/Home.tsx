@@ -3,8 +3,6 @@ import { eventBus } from '@mfe/shared'
 export function Home() {
 
   const handleLogin = () => {
-    console.log('Button Clicked');
-    
     eventBus.emit('user:login', { userId: '1', role: 'admin' })
   }
 

@@ -22,7 +22,9 @@ class EventBus {
     }
 
     emit<K extends keyof AppEvents>(event: K, payload: AppEvents[K]): void {
-        this.listeners.get(event)?.forEach((handler) => handler(payload))
+        this.listeners.get(event)?.forEach((handler) => {
+            try { handler(payload) } catch (e) { console.error(e) }
+        })
     }
 }
 

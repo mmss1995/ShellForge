@@ -11,7 +11,7 @@ export default defineConfig({
       exposes: {
         './App': './src/App',
       },
-      shared: ['@mfe/shared'],
+      shared: ['react', 'react-dom', '@mfe/shared'],
     }),
   ],
   server: {

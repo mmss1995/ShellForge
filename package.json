@@ -10,10 +10,16 @@
   "scripts": {
     "dev": "concurrently \"yarn workspace mfe-react preview\" \"yarn workspace mfe-vue preview\" \"yarn workspace shell dev\"",
     "build:remotes": "concurrently \"yarn workspace mfe-react build\" \"yarn workspace mfe-vue build\"",
-    "build": "yarn workspaces run build",
-    "lint": "yarn workspaces run lint"
+    "build": "yarn build:remotes && yarn workspace shell build",
+    "lint": "yarn workspace shell lint && yarn workspace mfe-react lint"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"
+  },
+  "resolutions": {
+    "source-map-js": "^1.2.2",
+    "postcss": "^8.5.23",
+    "nanoid": "^3.3.18",
+    "shell-quote": "^1.11.0"
   }
 }

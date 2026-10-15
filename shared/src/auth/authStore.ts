@@ -6,6 +6,7 @@ type AuthState = {
 
 type Listener = (state: AuthState) => void
 
+// UI state only: any app can emit 'user:login', so never use this to authorize anything. Roles must come from a server-verified token.
 class AuthStore {
   private state: AuthState = {
     userId: null,
@@ -34,7 +35,9 @@ class AuthStore {
   }
 
   private notify(): void {
-    this.listeners.forEach((l) => l(this.state))
+    this.listeners.forEach((l) => {
+      try { l(this.state) } catch (e) { console.error(e) }
+    })
   }
 }
 
