@@ -1,11 +1,11 @@
 # Project Context for an Agent
 
-This repository is a **Micro‑Frontend (MFE) Shell** boilerplate that demonstrates how to build a scalable, framework‑agnostic frontend architecture using Webpack 5 Module Federation.  The goal is to allow independent teams to develop, test, and deploy micro‑apps that can coexist in the same browser session without sharing the same bundle.
+This repository is a **ShellForge micro‑frontend** boilerplate that demonstrates how to build a scalable, framework‑agnostic frontend architecture using Webpack 5 Module Federation.  The goal is to allow independent teams to develop, test, and deploy micro‑apps that can coexist in the same browser session without sharing the same bundle.
 
 ## High‑level structure
 
 ```
-mfe-shell/
+shellforge/
 ├── shell/          # Host application (container)
 ├── mfe-react/      # React 18 micro‑app
 ├── mfe-vue/        # Vue 3 micro‑app

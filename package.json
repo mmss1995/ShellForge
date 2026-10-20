@@ -1,5 +1,5 @@
 {
-  "name": "mfe-shell",
+  "name": "shellforge",
   "private": true,
   "workspaces": [
     "shell",

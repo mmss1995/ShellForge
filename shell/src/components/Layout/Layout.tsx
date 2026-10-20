@@ -37,7 +37,7 @@ export function Layout({ children }: Props) {
         alignItems: 'center'
       }}>
         <span style={{ color: '#fff', fontWeight: 700, fontSize: '1.2rem' }}>
-          MFE Shell
+          ShellForge
         </span>
         <nav style={{ display: 'flex', gap: '1rem' }}>
           <NavLink

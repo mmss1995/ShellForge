@@ -1,4 +1,4 @@
-# 🧱 MFE Shell — Microfrontend Boilerplate
+# 🧱 ShellForge — Microfrontend Boilerplate
 
 > Production-ready microfrontend architecture with Module Federation, a shell app, and independent micro-apps in React and Vue.
 
@@ -14,14 +14,14 @@
 
 Frontend monoliths become unsustainable as teams grow: coupled deployments, dependency conflicts, and the inability to upgrade a framework without touching everything else.
 
-**MFE Shell** is a working boilerplate that demonstrates how to build a scalable frontend as a set of independent micro-apps — each with its own deploy cycle, its own framework and its own team ownership — exactly as it happens in large-scale enterprise projects.
+**ShellForge** is a working boilerplate that demonstrates how to build a scalable frontend as a set of independent micro-apps — each with its own deploy cycle, its own framework and its own team ownership — exactly as it happens in large-scale enterprise projects.
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-mfe-shell/
+shellforge/
 ├── shell/                     # Container app — Vite + React (port 3000)
 │   ├── src/
 │   │   ├── components/
@@ -69,8 +69,8 @@ mfe-shell/
 
 ```bash
 # Clone the repository
-git clone https://github.com/mmss1995/mfe-shell.git
-cd mfe-shell
+git clone https://github.com/mmss1995/shellforge.git
+cd shellforge
 
 # Install dependencies
 yarn install
